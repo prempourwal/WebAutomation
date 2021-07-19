@@ -5,6 +5,7 @@ prerequisite to execute this code
  2. Configure MAVEN_HOME
 
 **About framwork**
+
 Technoligies used
  1. Java as scripting langauage
  2. Junit
