@@ -6,7 +6,7 @@ prerequisite to execute this code
 
 **About framwork**
 
-Technoligies used
+Technologies used
  1. Java as scripting langauage
  2. Junit
  3. Maven 
