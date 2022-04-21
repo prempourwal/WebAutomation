@@ -2,6 +2,6 @@ package com.prem.elements;
 
 public abstract class WelcomePageElements {
 	
-	protected String loginEmailId = "username";
+	protected static String loginEmailId = "username";
 	
 }

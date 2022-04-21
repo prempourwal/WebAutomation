@@ -1,70 +1,53 @@
 package com.prem.helper;
 
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.prem.elements.XpathType;
 
 public class WebElementHelper {
 
-	WebDriver driver;
+	ThreadLocal<WebDriver> driver;
 	WebDriverWait wait;
-	
+	XpathType xpathType;
+
 	protected static final Logger LOG = Logger.getLogger(WebElementHelper.class);
-	
-	public WebElementHelper(WebDriver driver) {
-		this.driver = driver;
+
+	public WebElementHelper(ThreadLocal<WebDriver> webDriver) {
+		this.driver = webDriver;
 	}
 
 	public void click(String element) {
 		LOG.info("click on element : ".concat(element));
-		waitForElementClickable(element);
-		driver.findElement(By.xpath(element));
+		driver.get().findElement(By.xpath(element));
 	}
 
-	public void sendKeys(String elementXpath, String value) {
+	public void sendKeys(XpathType typeOfXpath, String elementXpath, String value) {
 		LOG.info("sending keys as : ".concat(value));
-		driver.findElement(By.id(elementXpath)).click();
-		driver.findElement(By.id(elementXpath)).clear();
-		driver.findElement(By.id(elementXpath)).sendKeys(value);
+		driver.get().findElement(By.id(elementXpath)).click();
+		driver.get().findElement(By.id(elementXpath)).clear();
+		sendKey(XpathType.ID, elementXpath, value);
 
 	}
 
-	public void switchToNewtab() {
-		Set<String> tabs = driver.getWindowHandles();
-		for (String tab : tabs) {
-			driver.switchTo().window(tab);
+	private void sendKey(XpathType xPathType, String webElement, String text) {
+		this.xpathType = xPathType;
+		switch (xPathType) {
+		case ID:
+			driver.get().findElement(By.id(webElement)).sendKeys(text);
+			break;
+		case XPATH:
+			driver.get().findElement(By.xpath(webElement)).sendKeys(text);
+			break;
+		case NAME:
+			driver.get().findElement(By.name(webElement)).sendKeys(text);
+			break;
+		default:
+			LOG.info("Element type not found.!!!!");
+			break;
 		}
 	}
 
-	public void scrollToElements(String elementXpath) throws InterruptedException {
-		WebElement element = driver.findElement(By.id(elementXpath));
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-		Thread.sleep(500);
-	}
-
-	public void waitForElementVisibel(String elementXpath) {
-		wait = new WebDriverWait(driver, 10);
-		try {
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementXpath)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public void waitForElementClickable(String elementXpath) {
-		wait = new WebDriverWait(driver, 10);
-		try {
-			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(elementXpath)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
 }
