@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="Test Execution">
+	<listeners>
+		<listener class-name="com.prem.reporter.CustomReportFormatter" />
+	</listeners>
+
+	<test name="QA Automation Test">
+		<classes>
+			<class name="com.prem.welcome.LoginTest" />
+		</classes>
+	</test>
+</suite>
